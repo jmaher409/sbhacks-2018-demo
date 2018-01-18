@@ -8,12 +8,11 @@ const messages = [];
 server.on('connection', connection => {
     connection.isAlive = true;
 
-    connection.on('pong', () => connection.isAlive = true);
-
+    // send message history to new connections
     messages.forEach(message => connection.send(message));
 
     connection.on('message', message => {
-        // store message so we can give new clients full history
+        // check if incoming message is valid
         const parsed = JSON.parse(message);
         if (!isValidMessage(parsed)) {
             console.error(`INVALID message received: ${message}`);
@@ -22,6 +21,7 @@ server.on('connection', connection => {
             console.info(`VALID message received: ${message}`)
         }
 
+        // store message so we can give new clients full history
         messages.push(message);
 
         // broadcast message to all other clients
@@ -32,13 +32,3 @@ server.on('connection', connection => {
         });
     });
 });
-
-
-const interval = setInterval(() => {
-    server.clients.forEach(client => {
-        if (client.isAlive === false) return client.terminate();
-
-        client.isAlive = false;
-        client.ping(() => { });
-    });
-}, 30000);

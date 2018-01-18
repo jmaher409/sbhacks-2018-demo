@@ -10,7 +10,6 @@ console.log(`serverAddress: ${serverAddress}`);
 console.log(`from: ${from}`);
 
 const ws = new WebSocket(serverAddress);
-let isAlive = false;
 
 ws.on('message', message => {
     const parsed = JSON.parse(message)
@@ -20,13 +19,5 @@ ws.on('message', message => {
         console.error(`INVALID message received: ${message}`)
     }
 });
-
-ws.on('connection', ws => {
-    isAlive = true;
-    ws.on('pong', () => {
-        isAlive = true;
-    })
-});
-
 
 process.stdin.on('data', content => ws.send(JSON.stringify({ from, content })));
