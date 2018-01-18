@@ -2,9 +2,9 @@
   "name": "sbhacks-2018-demo",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "server": "node src/server.js",
+    "client": "node src/client.js"
   },
   "repository": {
     "type": "git",
