@@ -6,8 +6,6 @@ const server = new WebSocket.Server({ port: 8080 });
 const messages = [];
 
 server.on('connection', connection => {
-    connection.isAlive = true;
-
     // send message history to new connections
     messages.forEach(message => connection.send(message));
 
